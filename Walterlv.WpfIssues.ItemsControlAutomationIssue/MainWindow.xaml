@@ -1,0 +1,56 @@
+﻿<Window x:Class="Walterlv.WpfIssues.ItemsControlAutomationIssue.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:Walterlv.WpfIssues.ItemsControlAutomationIssue.Models" xmlns:bugfixes="clr-namespace:Walterlv.WpfIssues.ItemsControlAutomationIssue.Bugfixes"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <FrameworkElement.DataContext>
+        <models:MainViewModel />
+    </FrameworkElement.DataContext>
+    <FrameworkElement.Resources>
+        <CollectionViewSource x:Key="DemoCollectionViewSource" Source="{Binding Items}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="GroupName" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </FrameworkElement.Resources>
+    <Grid>
+        <bugfixes:FixedItemsControl Margin="4" ItemsSource="{Binding Source={StaticResource DemoCollectionViewSource}}">
+            <ItemsControl.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Bold" />
+                                            <ItemsPresenter Grid.Row="1" />
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ItemsControl.GroupStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="models:DemoItem">
+                    <Button Width="160" Height="120" Background="LightGray" Margin="4"
+                            Content="{Binding ItemName}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </bugfixes:FixedItemsControl>
+    </Grid>
+</Window>
